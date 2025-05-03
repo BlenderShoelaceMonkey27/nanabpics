@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>yuvaliwastaken lol</title>
+  <meta charset="UTF-8">
+  <title>@yuvaliwastaken - Fanpage</title>
   <style>
     body {
       background: lime;
       color: red;
-      font-family: Comic Sans MS, cursive;
+      font-family: "Comic Sans MS", cursive;
       text-align: center;
       margin: 0;
       overflow: hidden;
@@ -27,25 +28,26 @@
       z-index: 9999;
     }
 
-    .stats {
-      border: 10px dashed magenta;
-      padding: 30px;
-      margin: 50px;
-      background: yellow;
-      font-size: 24px;
-      transform: rotate(1deg);
+    .stats, .show-after-enter {
       display: none;
     }
 
-    blink {
-      font-size: 40px;
-      color: cyan;
+    .stats {
+      border: 10px dashed magenta;
+      padding: 30px;
+      margin: 50px auto;
+      background: yellow;
+      font-size: 24px;
+      width: 80%;
+      max-width: 500px;
+      transform: rotate(1deg);
     }
 
     marquee {
       color: blue;
       background: pink;
       font-size: 32px;
+      margin-top: 20px;
     }
 
     img {
@@ -54,53 +56,60 @@
       width: 150px;
       height: 150px;
     }
+
+    #music-btn {
+      margin: 20px;
+      font-size: 24px;
+      background: hotpink;
+      border: 4px ridge lime;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
   <div id="enter">CLICK TO ENTER 😈</div>
 
-  <marquee scrollamount="30" style="display: none;">🔥🔥 yuvaliwastaken OFFICIAL FANPAGE 🔥🔥</marquee>
-  <blink style="display: none;">WELCOME TO THE INTERNET</blink>
+  <marquee class="show-after-enter">🔥🔥 yuvaliwastaken OFFICIAL FANPAGE 🔥🔥</marquee>
 
-  <div id="channel" class="stats">
+  <h2 class="show-after-enter">WELCOME TO THE INTERNET</h2>
+
+  <div id="channel" class="stats show-after-enter">
     <p>Loading some garbage...</p>
   </div>
 
-  <button id="music-btn" onclick="document.getElementById('cringe-audio').play()" style="display: none;">
+  <button id="music-btn" class="show-after-enter" onclick="document.getElementById('cringe-audio').play()">
     💿 Play Theme Music 💿
   </button>
-  <br><br>
+
   <audio id="cringe-audio" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-    ur browser is trash.
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    Your browser is trash.
   </audio>
 
   <script>
-    const apiKey = 'YOUR_API_KEY_HERE';
+    const apiKey = 'YOUR_API_KEY_HERE'; // ← replace with your real API key
     const username = 'yuvaliwastaken';
 
     document.getElementById('enter').addEventListener('click', () => {
       document.getElementById('enter').style.display = 'none';
-      document.querySelector('marquee').style.display = 'block';
-      document.querySelector('blink').style.display = 'block';
-      document.querySelector('.stats').style.display = 'block';
-      document.getElementById('music-btn').style.display = 'inline-block';
-      getWorstChannelData();
+      document.querySelectorAll('.show-after-enter').forEach(el => el.style.display = 'block');
+      getChannelData();
     });
 
-    async function getWorstChannelData() {
+    async function getChannelData() {
       try {
         const res1 = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forUsername=${username}&key=${apiKey}`);
-        const data1 = await res1.json();
-        let channel = data1.items?.[0];
+        let data = await res1.json();
+        let channel = data.items?.[0];
 
         if (!channel) {
           const res2 = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${username}&key=${apiKey}`);
-          const data2 = await res2.json();
-          const channelId = data2.items?.[0]?.snippet?.channelId;
+          const searchData = await res2.json();
+          const channelId = searchData.items?.[0]?.snippet?.channelId;
           const res3 = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${apiKey}`);
-          const data3 = await res3.json();
-          channel = data3.items?.[0];
+          data = await res3.json();
+          channel = data.items?.[0];
         }
 
         if (!channel) {
@@ -119,7 +128,8 @@
           <strong>Videos:</strong> ${videoCount} 🎥<br>
           <strong>Since:</strong> ${new Date(publishedAt).toDateString()} <br><br>
         `;
-      } catch (e) {
+      } catch (err) {
+        console.error(err);
         document.getElementById("channel").innerHTML = "💥 EPIC FAIL 💥";
       }
     }
