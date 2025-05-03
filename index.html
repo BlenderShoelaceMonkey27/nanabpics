@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nanab Photos - Noob Fishermen Only</title>
+</head>
+<body>
+
+<div id="quiz">
+  <h1>Fisherman Verification</h1>
+  <p>This exclusive tool is only for noob fishermen. Prove your noob-ness by answering incorrectly and *sillily*:</p>
+  <p><strong>What is the best bait for catching bass?</strong></p>
+  <input type="text" id="answer" />
+  <br><br>
+  <button onclick="checkAnswer()">Submit</button>
+  <p id="quizResult"></p>
+</div>
+
+<div id="denied" style="display:none;">
+  <h1>Access Denied</h1>
+  <p>You gave a serious or boring answer. Only noob fishermen with silly bait ideas are allowed here.</p>
+</div>
+
+<div id="mainSite" style="display:none;">
+  <h1>Nanab Photos</h1>
+  <p>Welcome, certified noob fisherman. Here are your random, chaotic photoz:</p>
+  <div id="gallery"></div>
+  <button onclick="loadPhotos()">Load More Photos</button>
+</div>
+
+<div id="secretFish" style="display:none;">
+  <h1>🐠 Secret Fish Photo</h1>
+  <p>You discovered the code <code>nanawu3by</code> – here's the closest thing we have to a fish!</p>
+  <img id="fishImage" />
+</div>
+
+<div id="clockDiv" style="display:none;">
+  <h1>🕒 Secret Clock</h1>
+  <p>The current time is:</p>
+  <div id="clock" style="font-size:32px;"></div>
+</div>
+
+<div id="robloxDiv" style="display:none;">
+  <h1>🧱 Classic Roblox Tribute</h1>
+  <canvas id="robloxLogo" width="320" height="120"></canvas>
+</div>
+
+<script>
+  const realAnswers = ['worms','nightcrawlers','minnows','crankbait','lures','plastic worms','shad','spinnerbait'];
+  const sillyAnswers = ['marshmallows','banana','cheese','minecraft bait','glowstick','toothpaste','bubble gum','chicken nuggets'];
+
+  function checkAnswer() {
+    const answer = document.getElementById('answer').value.trim().toLowerCase();
+    if (answer === 'nanawu3by') return showSecretFish();
+    if (answer === 'ytuwu') return showClock();
+    if (answer === 'bloxxx_') return showRobloxLogo();
+    if (sillyAnswers.includes(answer)) {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('mainSite').style.display = 'block';
+      loadPhotos();
+    } else {
+      document.getElementById('quiz').style.display = 'none';
+      document.getElementById('denied').style.display = 'block';
+    }
+  }
+
+  function generateRandomImage(w = 200, h = 150) {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const x = c.getContext('2d');
+    const d = x.createImageData(w, h);
+    for (let i = 0; i < d.data.length; i += 4) {
+      d.data[i] = Math.random() * 255;
+      d.data[i+1] = Math.random() * 255;
+      d.data[i+2] = Math.random() * 255;
+      d.data[i+3] = 255;
+    }
+    x.putImageData(d, 0, 0);
+    const img = document.createElement('img');
+    img.src = c.toDataURL();
+    return img;
+  }
+
+  function loadPhotos(count = 6) {
+    const g = document.getElementById('gallery');
+    for (let i = 0; i < count; i++) {
+      const img = generateRandomImage();
+      g.appendChild(img); g.appendChild(document.createElement('br'));
+    }
+  }
+
+  function showSecretFish() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('secretFish').style.display = 'block';
+    const c = document.createElement('canvas'); c.width = 300; c.height = 200;
+    const x = c.getContext('2d'); const d = x.createImageData(c.width, c.height);
+    for (let i = 0; i < d.data.length; i += 4) {
+      d.data[i] = Math.random() * 50;
+      d.data[i+1] = 80 + Math.random() * 120;
+      d.data[i+2] = 100 + Math.random() * 155;
+      d.data[i+3] = 255;
+    }
+    x.putImageData(d, 0, 0);
+    document.getElementById('fishImage').src = c.toDataURL();
+  }
+
+  function showClock() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('clockDiv').style.display = 'block';
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').innerText =
+      now.getHours().toString().padStart(2, '0') + ':' +
+      now.getMinutes().toString().padStart(2, '0') + ':' +
+      now.getSeconds().toString().padStart(2, '0');
+  }
+
+  function showRobloxLogo() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('robloxDiv').style.display = 'block';
+    const canvas = document.getElementById('robloxLogo');
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'red';
+    ctx.font = 'bold 50px Arial';
+    ctx.fillText('ROBLOX', 20, 80);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(85, 40, 20, 20); // fake hole in the "O"
+  }
+</script>
+
+</body>
+</html>
