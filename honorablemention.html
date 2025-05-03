@@ -8,10 +8,25 @@
       color: red;
       font-family: Comic Sans MS, cursive;
       text-align: center;
-      background-image: url('https://media.giphy.com/media/jpbnoe3UIa8TU8LM13/giphy.gif');
-      background-repeat: repeat;
-      cursor: crosshair;
+      margin: 0;
+      overflow: hidden;
     }
+
+    #enter {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: lime;
+      font-size: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 9999;
+    }
+
     .stats {
       border: 10px dashed magenta;
       padding: 30px;
@@ -19,16 +34,20 @@
       background: yellow;
       font-size: 24px;
       transform: rotate(1deg);
+      display: none;
     }
+
     blink {
       font-size: 40px;
       color: cyan;
     }
+
     marquee {
       color: blue;
       background: pink;
       font-size: 32px;
     }
+
     img {
       border: 5px double red;
       border-radius: 50%;
@@ -38,16 +57,36 @@
   </style>
 </head>
 <body>
-  <marquee scrollamount="30">🔥🔥 yuvaliwastaken OFFICIAL FANPAGE 🔥🔥</marquee>
-  <blink>WELCOME TO THE INTERNET</blink>
+  <div id="enter">CLICK TO ENTER 😈</div>
+
+  <marquee scrollamount="30" style="display: none;">🔥🔥 yuvaliwastaken OFFICIAL FANPAGE 🔥🔥</marquee>
+  <blink style="display: none;">WELCOME TO THE INTERNET</blink>
 
   <div id="channel" class="stats">
     <p>Loading some garbage...</p>
   </div>
 
+  <button id="music-btn" onclick="document.getElementById('cringe-audio').play()" style="display: none;">
+    💿 Play Theme Music 💿
+  </button>
+  <br><br>
+  <audio id="cringe-audio" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+    ur browser is trash.
+  </audio>
+
   <script>
     const apiKey = 'YOUR_API_KEY_HERE';
     const username = 'yuvaliwastaken';
+
+    document.getElementById('enter').addEventListener('click', () => {
+      document.getElementById('enter').style.display = 'none';
+      document.querySelector('marquee').style.display = 'block';
+      document.querySelector('blink').style.display = 'block';
+      document.querySelector('.stats').style.display = 'block';
+      document.getElementById('music-btn').style.display = 'inline-block';
+      getWorstChannelData();
+    });
 
     async function getWorstChannelData() {
       try {
@@ -79,17 +118,11 @@
           <strong>Views:</strong> ${viewCount} 🤯<br>
           <strong>Videos:</strong> ${videoCount} 🎥<br>
           <strong>Since:</strong> ${new Date(publishedAt).toDateString()} <br><br>
-          <audio controls autoplay loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-            ur browser is trash.
-          </audio>
         `;
       } catch (e) {
         document.getElementById("channel").innerHTML = "💥 EPIC FAIL 💥";
       }
     }
-
-    getWorstChannelData();
   </script>
 </body>
 </html>
