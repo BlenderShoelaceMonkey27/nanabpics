@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>yuvaliwastaken lol</title>
+  <style>
+    body {
+      background: lime;
+      color: red;
+      font-family: Comic Sans MS, cursive;
+      text-align: center;
+      background-image: url('https://media.giphy.com/media/jpbnoe3UIa8TU8LM13/giphy.gif');
+      background-repeat: repeat;
+      cursor: crosshair;
+    }
+    .stats {
+      border: 10px dashed magenta;
+      padding: 30px;
+      margin: 50px;
+      background: yellow;
+      font-size: 24px;
+      transform: rotate(1deg);
+    }
+    blink {
+      font-size: 40px;
+      color: cyan;
+    }
+    marquee {
+      color: blue;
+      background: pink;
+      font-size: 32px;
+    }
+    img {
+      border: 5px double red;
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <marquee scrollamount="30">🔥🔥 yuvaliwastaken OFFICIAL FANPAGE 🔥🔥</marquee>
+  <blink>WELCOME TO THE INTERNET</blink>
+
+  <div id="channel" class="stats">
+    <p>Loading some garbage...</p>
+  </div>
+
+  <script>
+    const apiKey = 'YOUR_API_KEY_HERE';
+    const username = 'yuvaliwastaken';
+
+    async function getWorstChannelData() {
+      try {
+        const res1 = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&forUsername=${username}&key=${apiKey}`);
+        const data1 = await res1.json();
+        let channel = data1.items?.[0];
+
+        if (!channel) {
+          const res2 = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${username}&key=${apiKey}`);
+          const data2 = await res2.json();
+          const channelId = data2.items?.[0]?.snippet?.channelId;
+          const res3 = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${apiKey}`);
+          const data3 = await res3.json();
+          channel = data3.items?.[0];
+        }
+
+        if (!channel) {
+          document.getElementById("channel").innerHTML = "<h2>💀 BROKEN LOL</h2>";
+          return;
+        }
+
+        const { title, thumbnails, publishedAt } = channel.snippet;
+        const { subscriberCount, viewCount, videoCount } = channel.statistics;
+
+        document.getElementById("channel").innerHTML = `
+          <img src="${thumbnails.default.url}"><br><br>
+          <strong>Name:</strong> ${title} <br>
+          <strong>Subs:</strong> ${subscriberCount} 🧂<br>
+          <strong>Views:</strong> ${viewCount} 🤯<br>
+          <strong>Videos:</strong> ${videoCount} 🎥<br>
+          <strong>Since:</strong> ${new Date(publishedAt).toDateString()} <br><br>
+          <audio controls autoplay loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+            ur browser is trash.
+          </audio>
+        `;
+      } catch (e) {
+        document.getElementById("channel").innerHTML = "💥 EPIC FAIL 💥";
+      }
+    }
+
+    getWorstChannelData();
+  </script>
+</body>
+</html>
