@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impossible Pixel Hunt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            color: white;
+            overflow: hidden;
+        }
+        #pixel {
+            width: 5px;
+            height: 5px;
+            background-color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Try to Click the Pixel! 🎯</h1>
+    <p>It's tiny, it moves, and it disappears fast. Good luck!</p>
+    <div id="pixel"></div>
+
+    <script>
+        let pixel = document.getElementById("pixel");
+
+        function movePixel() {
+            pixel.style.left = `${Math.random() * window.innerWidth}px`;
+            pixel.style.top = `${Math.random() * window.innerHeight}px`;
+        }
+
+        function vanishPixel() {
+            pixel.style.display = "none";
+            setTimeout(() => pixel.style.display = "block", 2000);
+            movePixel();
+        }
+
+        pixel.addEventListener("click", () => {
+            alert("YOU GOT IT! 🎉");
+            movePixel();
+        });
+
+        setInterval(vanishPixel, 1000);
+        movePixel();
+    </script>
+
+</body>
+</html>
